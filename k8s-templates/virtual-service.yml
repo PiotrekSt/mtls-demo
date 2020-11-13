@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: external-system-virtual-service
+  namespace: project
+spec:
+  hosts:
+    - external.system.com
+  http:
+    - match:
+        - port: 80
+      route:
+        - destination:
+            host: external.system.com
+            port:
+              number: 443

@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: devel
+  name: sample-app
+  labels:
+    app: sample-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sample-app
+  template:
+    metadata:
+      annotations:
+        sidecar.istio.io/inject: "true"
+        sidecar.istio.io/userVolume: '[{"name":"external-system-mtls-data","secret":{"secretName":"external-system-mtls-data"}}]'
+        sidecar.istio.io/userVolumeMount: '[{"mountPath":"/etc/mtlsfiles","name":"external-system-mtls-data","readonly":true}]'
+      labels:
+        app: sample-app
+    spec:
+      containers:
+      - name: sample-app
+        image: your-application-image:latest
+        resources:
+          requests:
+            memory: 300Mi
+            cpu: 500m
+          limits:
+            memory: 450Mi
+            cpu: 750m

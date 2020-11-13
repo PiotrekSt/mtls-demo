@@ -1,0 +1,17 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: DestinationRule
+metadata:
+  name: external-system-dest-rule
+  namespace: project
+spec:
+  host: external.system.com
+  trafficPolicy:
+    portLevelSettings:
+      - port:
+          number: 443
+        tls:
+          mode: MUTUAL
+          clientCertificate: /etc/mtlsfiles/cert
+          privateKey: /etc/mtlsfiles/key
+          caCertificates: /etc/mtlsfiles/cacert
+          sni: external.system.com
